@@ -1,7 +1,5 @@
 name: radio_station
-description: Podcast Application
-
-
+description: Radio and Podcast Application
 
 publish_to: 'none'
 
@@ -23,6 +21,7 @@ dependencies:
   get: ^4.6.5
   smooth_page_indicator: ^1.0.0+2
   flutter_native_splash: ^2.2.9
+  device_preview: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -39,12 +38,26 @@ flutter:
   uses-material-design: true
 
   assets:
-    - asset_files/
-    - asset_files/svg/
-    - asset_files/png/
-    - asset_files/fonts/Circular-Std-Book.ttf
+    - assets/svg/
+    - assets/png/
+    - assets/png/bottom_navigation_icons/
+    - assets/png/cover/
+    - assets/png/events/
+    - assets/png/icons/
+    - assets/png/popular_broadcasts/
+    - assets/png/similar_broadcasts/
+    - assets/png/tutorial/
+    - assets/png/splash_screen/
 
   fonts:
     - family: Circular
       fonts:
-        - asset: asset_files\fonts\Circular-Std-Book.ttf
+        - asset: assets\fonts\Circular-Std-Book.ttf
+
+    - family: HK_Bold
+      fonts:
+        - asset: assets\fonts\HKGrotesk-BoldLegacy.otf
+
+    - family: HK_Medium
+      fonts:
+        - asset: assets\fonts\HKGrotesk-MediumLegacy.otf

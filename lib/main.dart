@@ -1,14 +1,11 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:radio_station/constants.dart';
-import 'package:radio_station/view/forget_password.dart';
-import 'package:radio_station/view/home/home.dart';
-import 'package:radio_station/view/sign_in.dart';
-import 'package:radio_station/view/sign_up.dart';
-import 'package:radio_station/view/splash.dart';
-import 'package:radio_station/view/test.dart';
-import 'package:radio_station/view/tutorial.dart';
+import 'package:radio_station/view/home_layout/home_layout.dart';
+import 'package:radio_station/view/log_in/log_in.dart';
+
+import 'global_constants.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,24 +13,25 @@ void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
-  runApp(const MyApp());
+  runApp(DevicePreview(builder: (context) => MyApp()));
+  //runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      builder: DevicePreview.appBuilder,
       debugShowCheckedModeBanner: false,
-      home: SignIn(),
-      theme: ThemeData(primarySwatch: MaterialColor(0xffF11775, color)),
+      home: LogIn(),
+      theme: ThemeData(
+          dividerTheme:
+              const DividerThemeData(space: 5, color: Colors.transparent),
+          fontFamily: "Circular",
+          primarySwatch: MaterialColor(0xffF11775, color)),
       getPages: [
-        GetPage(name: "/home", page: () => Home()),
-        GetPage(name: "/signIn", page: () => SignIn()),
-        GetPage(name: "/signUp", page: () => SignUp()),
-        GetPage(name: "/forgetPassword", page: () => ForgetPassword()),
-        GetPage(name: "/tutorial", page: () => Tutorial()),
+        GetPage(name: "/home_layout", page: () => HomeLayout()),
+        GetPage(name: "/log_in", page: () => LogIn()),
       ],
     );
   }

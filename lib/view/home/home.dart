@@ -1,99 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:radio_station/model/Song.dart';
-import 'package:radio_station/constants.dart';
-import 'package:radio_station/controller/home_controller.dart';
+import 'package:radio_station/control/home_controller.dart';
+import 'package:radio_station/global_constants.dart';
 import 'package:radio_station/view/home/component/cover.dart';
-import 'package:radio_station/view/home/component/bottom_navgiation_bar.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:radio_station/view/home/home_constants.dart';
 
-import 'component/popular_broadcast_card.dart';
+import 'component/popular_broadcast_entities.dart';
+import 'component/similar_broadcast_entities.dart';
 
 class Home extends StatelessWidget {
-  Song a = Song(name: "fds", photo: "photo", singer: "singer");
-
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
-        init: HomeController(),
-        builder: (controller) => Scaffold(
-              body: Stack(
-                children: [
-                  Column(
-                    children: [
-                      Container(
-                        height: heightOfScreen(context, 0.40),
-                        child: Stack(
-                          children: [
-                            Cover(context, controller.songs, controller),
-                            Align(
-                              alignment: Alignment(0.9, -0.77),
-                              child: Icon(
-                                Icons.search,
-                                size: 40,
-                                color: Color(0xff5B5E6F),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        color: Color(0xff13131A),
-                        height: heightOfScreen(context, 0.50),
-                      ),
-                    ],
-                  ),
-                  Align(
-                    alignment: Alignment(0.0, -0.2),
-                    child: Container(
-                      padding:
-                          EdgeInsets.only(left: widthOfScreen(context, 0.05)),
-                      width: double.infinity,
-                      height: heightOfScreen(context, 0.28),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Popular Broadcast",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: "Circular",
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Divider(
-                            color: Colors.transparent,
-                          ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: [
-                                PopularBroadcastCard(
-                                    context,
-                                    "asset_files/png/1.png",
-                                    "THE JORDAN HARBING",
-                                    "Celeste Headlee"),
-                                VerticalDivider(),
-                                PopularBroadcastCard(
-                                    context,
-                                    "asset_files/png/2.png",
-                                    "FROM NEGATIVE TO POSTIVE",
-                                    "The King of Miami"),
-                                VerticalDivider(),
-                                PopularBroadcastCard(
-                                    context,
-                                    "asset_files/png/3.png",
-                                    "I SURVIVED",
-                                    "Cold Case Files: Modus Operandi")
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              bottomNavigationBar: BottomNav(context,controller),
-            ));
+      init: HomeController(),
+      builder: (controller) => LayoutBuilder(builder: (context, constraints) {
+        //height - bottomNav height and the whole width
+        return Stack(
+          children: [
+            SizedBox(
+              height: constraints.maxHeight * 0.4809,
+              width: double.infinity,
+              child: cover(context, controller.songs, controller),
+            ),
+            Column(
+              children: [
+                Container(
+                    padding:
+                        EdgeInsets.only(left: constraints.maxWidth * 0.0509),
+                    //from top to popularBroadcastLabel without divider under it
+                    height: constraints.maxHeight * 0.3709,
+                    width: double.infinity,
+                    child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: popularBroadcastLabel)),
+                Divider(height: constraints.maxHeight * 0.0183),
+                SizedBox(
+                  height: constraints.maxHeight * 0.2482,
+                  width: double.infinity,
+                  child: popularBroadcastEntities(
+                      context, controller.broadcastEntities),
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: constraints.maxWidth * 0.0509),
+                  height: constraints.maxHeight * 0.0451,
+                  width: double.infinity,
+                  child: Align(
+                      alignment: Alignment.topLeft,
+                      child: similarBroadcastLabel),
+                ),
+                Expanded(
+                    child: similarBroadcastEntities(
+                        context, controller.similarBroadcastEntities))
+              ],
+            ),
+            Padding(
+                padding: EdgeInsets.fromLTRB(
+                    constraints.maxWidth * 0.8994,
+                    constraints.maxHeight * 0.062,
+                    constraints.maxWidth * 0.0586,
+                    0),
+                child: searchIcon(context))
+          ],
+        );
+      }),
+    );
   }
 }

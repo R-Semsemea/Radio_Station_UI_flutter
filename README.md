@@ -1,3 +1,3 @@
 # radio_station
 
-Radio Station & Podcast Imaginary UI
+Radio and Podcast Application

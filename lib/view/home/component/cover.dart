@@ -1,67 +1,76 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:radio_station/controller/home_controller.dart';
+import 'package:radio_station/control/home_controller.dart';
+import 'package:radio_station/view/home/home_constants.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../../model/Song.dart';
+import '../../../model/song.dart';
 
-Widget Cover(BuildContext context, List<Song> song, HomeController controller) {
-  return PageView.builder(
-    controller: controller.pageController,
-    scrollDirection: Axis.vertical,
-    itemCount: controller.songs.length,
-    itemBuilder: (BuildContext context, int index) {
-      return Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(song[index].photo),
-                  fit: BoxFit.cover),
+Widget cover(BuildContext context, List<Song> song, HomeController controller) {
+  return LayoutBuilder(builder: (context, constraints) {
+    //only cover height and whole width
+    return PageView.builder(
+      controller: controller.pageController,
+      scrollDirection: Axis.vertical,
+      itemCount: controller.songs.length > 4 ? 4 : controller.songs.length,
+      //4 cover songs max
+      itemBuilder: (BuildContext context, int index) {
+        return Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage(song[index].photo), fit: BoxFit.cover),
+              ),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-            alignment: Alignment.centerLeft,
-            child: Row(
+            Column(
               children: [
-                SmoothPageIndicator(
-                  axisDirection: Axis.vertical,
-                  controller: controller.pageController,
-                  count: controller.songs.length,
-                  effect: const JumpingDotEffect(
-                      jumpScale: 1.6,
-                      verticalOffset: 5,
-                      dotHeight: 6,
-                      dotWidth: 6,
-                      activeDotColor: Colors.white,
-                      dotColor: Colors.white,
-                      paintStyle: PaintingStyle.stroke),
-                ),
-                VerticalDivider(
-                  color: Colors.transparent,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(song[index].singer,
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14,
-                            fontFamily: "Circular")),
-                    Text(song[index].name,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 28,
-                            fontFamily: "Circular"))
-                  ],
-                ),
+                Divider(height: constraints.maxHeight * 0.2991),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: constraints.maxWidth * 0.0506),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SmoothPageIndicator(
+                          axisDirection: Axis.vertical,
+                          controller: controller.pageController,
+                          count: controller.songs.length > 4
+                              ? 4
+                              : controller.songs.length,
+                          effect: const JumpingDotEffect(
+                              jumpScale: 1.6,
+                              verticalOffset: 5,
+                              dotHeight: 6,
+                              dotWidth: 6,
+                              activeDotColor: Colors.white,
+                              dotColor: Colors.white,
+                              paintStyle: PaintingStyle.stroke),
+                        ),
+                        VerticalDivider(
+                          width: constraints.maxWidth * 0.0666,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(song[index].singer,
+                                style: coverLargeTextStyle),
+                            Divider(
+                              height: constraints.maxHeight * 0.01,
+                            ),
+                            Text(song[index].name, style: coverSmallTextStyle)
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                )
               ],
             ),
-          ),
-        ],
-      );
-    },
-  );
+          ],
+        );
+      },
+    );
+  });
 }
