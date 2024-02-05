@@ -2,10 +2,10 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:radio_station/view/home_layout/home_layout.dart';
-import 'package:radio_station/view/log_in/log_in.dart';
+import 'package:radio_station/routes.dart';
+import 'package:radio_station/view/screen/auth/log_in.dart';
 
-import 'global_constants.dart';
+import 'core/constant/app_theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,25 +14,24 @@ void main() {
     statusBarColor: Colors.transparent,
   ));
   runApp(DevicePreview(builder: (context) => MyApp()));
-  //runApp(MyApp());
+  //runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       builder: DevicePreview.appBuilder,
       debugShowCheckedModeBanner: false,
-      home: LogIn(),
-      theme: ThemeData(
-          dividerTheme:
-              const DividerThemeData(space: 5, color: Colors.transparent),
+      home: const LogIn(),
+      theme: appTheme,
+      /*ThemeData(
+          dividerTheme:const DividerThemeData(space: 5, color: Colors.transparent),
           fontFamily: "Circular",
-          primarySwatch: MaterialColor(0xffF11775, color)),
-      getPages: [
-        GetPage(name: "/home_layout", page: () => HomeLayout()),
-        GetPage(name: "/log_in", page: () => LogIn()),
-      ],
+          primarySwatch: MaterialColor(0xffF11775, color)),*/
+      getPages: routes,
     );
   }
 }
